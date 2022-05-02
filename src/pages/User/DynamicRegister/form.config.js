@@ -176,6 +176,20 @@ export const useAdminConfig = (form) => {
 
   return [
     {
+      itemProps: { label: '注册角色' },
+      condition: {
+        required: true,
+        name: '姓名',
+        length: { min: 1, max: 10 }
+      },
+      name: 'orgAdminName1',
+      children: 
+      <Select>
+        <Select.Option value={0}>供应商</Select.Option>
+        <Select.Option value={1}>客户</Select.Option>
+      </Select>
+    },
+    {
       itemProps: { label: '管理员姓名' },
       condition: {
         required: true,

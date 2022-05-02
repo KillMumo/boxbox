@@ -143,14 +143,14 @@ const Home = (props) => {
 
   const columns = [
     {
-      title: '年份',
+      title: '编号',
       dataIndex: 'year',
-      width: 50
+      width: 100
     },
     {
-      title: '月份',
+      title: '盒型种类',
       dataIndex: 'month',
-      width: 50,
+      width: 100,
       render(t,r){
         if (t===undefined||t===null){
           return "--";
@@ -160,9 +160,9 @@ const Home = (props) => {
   }
     },
     {
-      title: '日期',
+      title: '成品盒长(mm)',
       dataIndex: 'date',
-      width: 50,
+      width: 120,
       render(t,r){
         if (t===undefined||t===null){
           return "--";
@@ -173,14 +173,14 @@ const Home = (props) => {
     },
 
     {
-      title: '企业名称',
+      title: '成品盒宽(mm)',
       dataIndex: 'companyName',
-      width:145
+      width:120
     },
     {
-      title: '行业',
+      title: '成品盒高(mm)',
       dataIndex: 'industry',
-      width:145,
+      width:120,
       render(t,r){
         if (t===undefined||t===null){
           return "--";
@@ -189,30 +189,27 @@ const Home = (props) => {
         }
       }
     },
-    // {
-    //   title: '数据类型',
-    //   dataIndex: 'status',
-    //   width:100
-    // },
     {
-      title: '碳排放量(吨)',
+      title: '所属供应商',
       dataIndex: 'total',
-      width:100
+      width:150
     },
     {
-      title: '能源类型',
+      title: '联系电话',
       dataIndex: 'energyFrom',
-      width:100
+      width:120
     },
-
+    {
+      title: '审核状态',
+      dataIndex: 'sss',
+      width:80
+    },
     {
       title: '操作',
       key: 'action',
       width:100,
       render: (t, r) => {
         const uri = encodeURI(`${r.orgId} - ${r.energyFrom} -${ r.total}`)
-        // console.log("uri--------------")
-        // console.log(uri)
         return (
           <ButtonGroup type="action">
             <Button onClick={() => {
@@ -221,7 +218,14 @@ const Home = (props) => {
               }}>查看
               {/* <Link to={{ pathname: `/dataManagement/details/${uri}` }}>查看</Link> */}
             </Button>
-            <Button auth={"data_delete"} onClick={() => handleDelete({ uids: r.uid })}>删除</Button>
+            <Button onClick={() => handleDelete({ uids: r.uid })}>删除</Button>
+            <Button onClick={()=>{
+                // saveItem(r)
+                // router.push(`/reduction/edit/${r.uid}`)
+              }}>
+                {/*<Link to={{ pathname: `/reduction/edit/${r.bizNo}` }}>编辑</Link>*/}
+                编辑
+              </Button>
           </ButtonGroup>
         )
       }
@@ -233,124 +237,59 @@ const Home = (props) => {
       <Card style={{ paddingRight: 20 }}>
         <Form {...searchFormLayout} onSubmit={submit}>
           <Row gutter={24}>
-            <Col span={8}>
-              <Form.Item label="企业名称">
-                {getFieldDecorator('companyName')(<Input placeholder="请输入公司名称" />)}
-              </Form.Item>
-            </Col>
+          <Col span={8}>
+            <Form.Item label="预期盒长范围">
+              {getFieldDecorator('orgName')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('orgName2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="预期盒宽范围">
+              {getFieldDecorator('width')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('width2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="预期盒高范围">
+              {getFieldDecorator('height')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('height2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="盒型种类">
+              {getFieldDecorator('status', {
+                initialValue: type
+              })(
+                <Select>
+                  <Select.Option value="6">全部</Select.Option>
+                  <Select.Option value="1">已通过</Select.Option>
+                  <Select.Option value="2">未认证</Select.Option>
+                  <Select.Option value="3">待审核</Select.Option>
+                  <Select.Option value="4">已退回</Select.Option>
+                  <Select.Option value="5">已驳回</Select.Option>
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+
+          <Col span={8}>
+            <Form.Item label="所属供应商">
+              {getFieldDecorator('companyname')(<Input placeholder="请输入"/>)}
+            </Form.Item>
+          </Col>
+
+          <Col span={8}>
+            <Form.Item label="审核状态">
+              {getFieldDecorator('companyname')(<Input placeholder="请输入"/>)}
+            </Form.Item>
+          </Col>
 
             <Col span={8}>
-              <Form.Item label="年份">
-                {getFieldDecorator('year',{
-                  initialValue:'2021'
-                })(
-                  <Select placeholder="请选择">
-                    <Select.Option value="" key="">
-                      全部
-                    </Select.Option>
-                    {yearList.map((key) => (
-                      <Select.Option key={key} value={key}>
-                        {key}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                )}
-              </Form.Item>
-            </Col>
-
-            <Col span={8}>
-              <Form.Item label="月份">
-                {getFieldDecorator('month')(
-                  <Select placeholder="请选择">
-                    <Select.Option value="" key="">
-                      全部
-                    </Select.Option>
-                    <Select.Option value="01" key="">
-                      一月
-                    </Select.Option>
-                    <Select.Option value="02" key="">
-                      二月
-                    </Select.Option>
-                    <Select.Option value="03" key="">
-                      三月
-                    </Select.Option>
-                    <Select.Option value="04" key="">
-                      四月
-                    </Select.Option>
-                    <Select.Option value="05" key="">
-                      五月
-                    </Select.Option>
-                    <Select.Option value="06" key="">
-                      六月
-                    </Select.Option>
-                    <Select.Option value="07" key="">
-                      七月
-                    </Select.Option>
-                    <Select.Option value="08" key="">
-                      八月
-                    </Select.Option>
-                    <Select.Option value="09" key="">
-                      九月
-                    </Select.Option>
-                    <Select.Option value="10" key="">
-                      十月
-                    </Select.Option>
-                    <Select.Option value="11" key="">
-                      十一月
-                    </Select.Option>
-                    <Select.Option value="12" key="">
-                      十二月
-                    </Select.Option>
-
-                  </Select>
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="行业">
-                {getFieldDecorator('industry')(
-                  <Select placeholder="请输入">
-                    <Select.Option value="" key="">
-                      全部
-                    </Select.Option>
-                    {industryList.map((key) => (
-                      <Select.Option key={key} value={key}>
-                        {key}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-             <Form.Item label="能源类型">
-               {getFieldDecorator('energyFrom')(
-               <Select placeholder="请输入">
-               {Object.keys(carbonModle).map((key) => (
-                 <Select.Option key={key} value={carbonModle[key]}>
-                   {carbonModle[key]}
-                 </Select.Option>
-               ))}
-             </Select>)}
-              {/* (<Input placeholder="请输入数据来源" />)} */}
-             </Form.Item>
-            </Col>
-
-
-            <Col span={8}>
-              {/* <Row>
-                <Col span={6}></Col>
-                <Col span={18}> */}
                   <ButtonGroup align='right'>
                     <Button
-                      style={{
-                        backgroundColor: '#35AE8C',
-                        borderColor: '#35AE8C',
-                        '&hover': {
-                          backgroundColor: '#7ae6c7',
-                          borderColor: '#7ae6c7'
-                        }
-                      }}
                       type="primary"
                       htmlType="submit"
                     >
@@ -358,8 +297,6 @@ const Home = (props) => {
                     </Button>
                     <Button onClick={reset}>重置</Button>
                   </ButtonGroup>
-                {/* </Col>
-              </Row> */}
             </Col>
           </Row>
         </Form>
@@ -375,14 +312,15 @@ const Home = (props) => {
         <ButtonGroup>
           <Button
             // to="wasteQuery/add"
-            auth={"data_batch_import"}
-            onClick={openForm}
+            // auth={"data_batch_import"}
+            // onClick={openForm}
+            to="/dataManagement/allList/add"
             type="primary"
           >
-            批量导入
+            新增
           </Button>
           <Button
-            auth={"data_mgr_batch_delete"}
+            // auth={"data_mgr_batch_delete"}
             onClick={deleteall}
             // type="primary"
           >

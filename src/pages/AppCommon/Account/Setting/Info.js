@@ -41,13 +41,13 @@ const Info = () => {
           </span>
         </Description>
         <Description label="职位">{user.position}</Description>
-        <Description label="所属企业">{user.orgName}</Description> 
+        {/* <Description label="所属企业">{user.orgName}</Description> 
         <Description label="组织机构代码:"> {data?.orgCode||'--'}</Description>
         <Description label="法人姓名:"> {data?.legalPersonName||'--'}</Description>
         <Description label="统一社会信用代码:"> {data?.socialCreditCode||'--'}</Description>
         <Description label="公司工商注册号码:"> {data?.licenseNumber||'--'}</Description>
         <Description label="主要业务:"> {data?.scope||'--'}</Description>
-        <Description label="经营行业:"> {data?.orgType||'--'}</Description>
+        <Description label="经营行业:"> {data?.orgType||'--'}</Description> */}
       </DescriptionList>
     </Card>
   )

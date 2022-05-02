@@ -106,7 +106,7 @@ const Login = (props) => {
             登 录
           </Button>
           <div className={styles.actionContainer}>
-           <Link to="/user/register">企业注册</Link>
+           <Link to="/user/register">用户注册</Link>
           {/*  <Link to="/user/forget">忘记密码</Link>*/}
           </div>
           {/* <div className={styles.loginFooter}>

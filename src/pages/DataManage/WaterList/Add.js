@@ -11,7 +11,7 @@ import UploadNew from '@/components/UploadNew'
 import UploadButton from '@/components/UploadButton'
 import DownloadItem from '@/components/DownloadItem'
 import { useSelector } from 'react-redux'
-import options from "./Data";
+// import options from "./Data";
 
 const Add = (props) => {
   const formLayout = {
@@ -140,176 +140,103 @@ useEffect(()=>{
   return (
     <Card loading={getWasteLoading}>
       <Form {...formLayout}>
-      <Form.Item label="碳汇场景">
-          {getFieldDecorator('methodScene', {
-            rules: [
-              {
-                required: true,
-                message: '请输入碳汇场景！'
-              }
-            ],
-            initialValue: info?.extra?.methodScene||'分布式光伏'
-          })(<Select style={{ width: 200 }} placeholder="请输入">
-                <Select.Option value="分布式光伏" key="">
-                  分布式光伏
-                </Select.Option>
-              </Select>
-          // <Input style={{ width: 400 }} placeholder="请输入" />
-          )}
-        </Form.Item>
-
-        {(role==='account_admin'||role==='account_super_admin')&&(<Form.Item label="企业名称">
-          {getFieldDecorator('companyName', {
-            rules: [
-              {
-                required: true,
-                message: '请输入企业名称！'
-              }
-            ],
-            initialValue: info?.extra?.companyName
-          })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
-        </Form.Item>)}
-
-        <Form.Item label="项目名称">
+      <Form.Item label="供应商名称">
           {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入项目名称！'
+                message: '请输入供应商名称！'
               }
             ],
             initialValue: info?.extra?.projectName
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
-        <Form.Item label="描述">
-          {getFieldDecorator('desc', {
-            rules: [
-              {
-                message: '请输入描述！'
-              }
-            ],
-            initialValue: info?.extra?.desc
-          })(
-            <TextArea style={{ width: 600 }} rows={4} placeholder={"请输入"}/>
-          )}
-        </Form.Item>
-
-        {/* <Row gutter={24}> */}
-          <Form.Item label="项目地点">
-            {/* <Col span={8}> */}
-              {getFieldDecorator('place', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择！',
-
-                  }
-                ],
-                initialValue:  info?.extra?.place
-              })(
-                // style={{ width: 170, marginRight: 10 }}
-                <Cascader style={{ width: 500 ,marginRight:800}} options={options} onChange={onChange} placeholder="选择地址"  />
-              )}
-            {/* </Col> */}
-          {/* <Col span={8}> */}
-            {getFieldDecorator('rest', {
-              rules: [
-                {
-                  required: true,
-                  message: '请选择市！',
-
-                }
-              ],
-              initialValue: info?.extra?.rest
-            })(
-              <Input style={{ width: 500 }} placeholder={"请输入详细地址"}/>
-            )}
-          {/* </Col> */}
-          </Form.Item>
-        {/* </Row> */}
-
-        <Form.Item label="建设规模">
-          {getFieldDecorator('buildingScale', {
+        <Form.Item label="企业地址">
+          {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入建设规模！'
+                message: '请输入企业地址！'
               }
             ],
-            initialValue: info?.extra?.buildingScale
-          })(
-            <Input addonAfter='KWP' style={{ width: 400 }} placeholder={"请输入"}/>
-          )}
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
-        <Form.Item label="备案文件号">
-          {getFieldDecorator('fileNum', {
+        <Form.Item label="联系人姓名">
+          {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入备案文件号！'
+                message: '请输入联系人姓名！'
               }
             ],
-            initialValue: info?.extra?.fileNum
-          })(
-            <Input style={{ width: 400 }} placeholder="请输入"/>
-          )}
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
-        <Form.Item label="备案时间">
-          {getFieldDecorator('fileTime', {
-            initialValue: moment(id === '' ? moment() : info?.extra?.fileTime),
+        <Form.Item label="联系人电话">
+          {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入备案时间！'
+                message: '请输入联系人电话！'
               }
             ],
-          })(
-            <DatePicker
-              format="YYYY-MM-DD"
-              // style={{ width: '100%' }}
-              style={{ width: 400 }}
-              placeholder="请输入"
-            />
-          )}
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
-        <Form.Item label="投产规模">
-          {getFieldDecorator('scale', {
+        <Form.Item label="成品盒长">
+          {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入投产规模！'
+                message: '请输入成品盒长！'
               }
             ],
-            initialValue: info?.extra?.scale
-          })(
-            <Input addonAfter='KWP' style={{ width: 400 }} placeholder={"请输入"}/>
-          )}
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
         </Form.Item>
 
-        <Form.Item label="开始(并网)时间">
-          {getFieldDecorator('startTime', {
-            initialValue: moment(id === '' ? moment() : info?.extra?.startTime),
+        <Form.Item label="成品盒宽">
+          {getFieldDecorator('projectName', {
             rules: [
               {
                 required: true,
-                message: '请输入开始(并网)时间！'
+                message: '请输入成品盒宽！'
               }
             ],
-          })(
-            <DatePicker
-              format="YYYY-MM-DD"
-              // style={{ width: '100%' }}
-              style={{ width: 400 }}
-              placeholder="请输入"
-            />
-          )}
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
         </Form.Item>
 
-        <Form.Item label="项目备案证/产权证明文件">
+        <Form.Item label="成品盒高">
+          {getFieldDecorator('projectName', {
+            rules: [
+              {
+                required: true,
+                message: '请输入成品盒高！'
+              }
+            ],
+            initialValue: info?.extra?.projectName
+          })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
+        </Form.Item>
+
+        <Form.Item label="盒型种类">
+          {getFieldDecorator('projectName', {
+            rules: [
+              {
+                required: true,
+                message: '请输入成品盒高！'
+              }
+            ],
+            initialValue: info?.extra?.projectName
+          })(<Select style={{ width: 400 }} placeholder="请输入"/>)}
+        </Form.Item>
+
+        <Form.Item label="数字文件">
           {getFieldDecorator('attachment', {
             initialValue: (getItem()?.extra?.attachment || []).map((f) => ({
               uid: f.uid,
@@ -339,43 +266,7 @@ useEffect(()=>{
           )}
           </Form.Item>
 
-          <Form.Item label="方法学版本">
-          {getFieldDecorator('meiyongde', {
-            rules: [
-              {
-                required: false,
-              }
-            ],
-          })(
-            // <DownloadItem list={[]} />
-            <Button onClick={() => {
-              localStorage.setItem("methoddetail", JSON.stringify('分布式光伏'))
-              // router.push(`/methodMgr/view`,'_blank')
-              window.open(`/methodMgr/view`, '_blank')
-            }}>查看</Button>
-            // <DownloadItem style={{ width: 400 }} list={methodfile?.extra?.methodFile||[]} />
-          )}
-        </Form.Item>
-          {/*{getFieldDecorator('attachment', {*/}
-          {/*  //   initialValue: (getItem()?.extra?.attachment || []).map((f) => ({*/}
-          {/*  //   uid: f.uid,*/}
-          {/*  //   name: f.name,*/}
-          {/*  //   status: 'done',*/}
-          {/*  //   url: f.url,*/}
-          {/*  //   thumbUrl: '/matrix/biz-file/downloadFile?path=' + encodeURI(f.url)*/}
-          {/*  // })),*/}
-
-          {/*})(*/}
-          {/*  <UploadNew*/}
-          {/*    length={10}*/}
-          {/*    size={20}*/}
-          {/*    extra="请上传附件"*/}
-          {/*    accept=".doc,.docx,.xls,.xlsx,.pdf,.jpg,.jpeg,.png"*/}
-          {/*    listType="picture"*/}
-          {/*  >*/}
-          {/*    <UploadButton />*/}
-          {/*  </UploadNew>*/}
-          {/*)}*/}
+        
         <Form.Item {...buttonlayout} label=" ">
           <Button
             // loading={updateLoading || submitLoading}
@@ -384,7 +275,7 @@ useEffect(()=>{
             htmlType="submit"
             onClick={handleSubmit}
           >
-            保存
+            新增
           </Button>
           <Button style={{ marginLeft: '10px' }} onClick={() => props.history.goBack()}>
             取消

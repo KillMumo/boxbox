@@ -44,14 +44,14 @@ const List = (props) => {
 
     return [
       {
-        title: '企业名称',
+        title: '编号',
         dataIndex: 'orgName',
         // fixed: 'left',
         width: 180,
         ellipsis: true
       },
       {
-        title: '行业',
+        title: '盒型种类',
         dataIndex: 'industry',
         // fixed: 'left',
         width: 150,
@@ -59,35 +59,41 @@ const List = (props) => {
         // render: (t) => (t === '0' ? '供应商' : '客户')
       },
       {
-        title: '法人',
+        title: '成品盒长(mm)',
         dataIndex: 'legalPersonName',
         width: 90,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
-        title: '管理员',
+        title: '成品盒宽(mm)',
         dataIndex: 'adminName',
         width: 120,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
-        title: '管理员手机号',
+        title: '成品盒高(mm)',
         dataIndex: 'adminPhone',
         width: 140,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
-        title: '状态',
+        title: '所属供应商',
         dataIndex: 'status',
         width: 80,
         ellipsis: true,
         render: (t) => companyStatus[t]?.name
       },
       {
-        title: '入驻时间',
+        title: '联系电话',
+        dataIndex: 'createTime',
+        width: 120,
+        ellipsis: true
+      },
+      {
+        title: '日期',
         dataIndex: 'createTime',
         width: 120,
         ellipsis: true
@@ -131,23 +137,28 @@ const List = (props) => {
       <Form {...searchFormLayout} onSubmit={submit}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="企业名称">
-              {getFieldDecorator('orgName')(<Input placeholder="请输入" />)}
+            <Form.Item label="预期盒长范围">
+              {getFieldDecorator('orgName')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('orgName2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
             </Form.Item>
           </Col>
-          {/* <Col span={8}>
-            <Form.Item label="企业类型">
-              {getFieldDecorator('orgType')(
-                <Select onSelect={handleType} placeholder="请选择">
-                  <Select.Option value="2">全部</Select.Option>
-                  <Select.Option value="0">供应商</Select.Option>
-                  <Select.Option value="1">客户</Select.Option>
-                </Select>
-              )}
-            </Form.Item>
-          </Col> */}
           <Col span={8}>
-            <Form.Item label="状态">
+            <Form.Item label="预期盒宽范围">
+              {getFieldDecorator('width')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('width2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="预期盒高范围">
+              {getFieldDecorator('height')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              ~
+              {getFieldDecorator('height2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="盒型种类">
               {getFieldDecorator('status', {
                 initialValue: type
               })(
@@ -162,6 +173,12 @@ const List = (props) => {
               )}
             </Form.Item>
           </Col>
+
+          <Col span={8}>
+            <Form.Item label="所属供应商">
+              {getFieldDecorator('companyname')(<Input placeholder="请输入"/>)}
+            </Form.Item>
+          </Col>
           <Col span={8}>
             <ButtonGroup type="form" align="right">
               <Button type="primary" htmlType="submit">
@@ -171,9 +188,6 @@ const List = (props) => {
             </ButtonGroup>
           </Col>
         </Row>
-        {/* <Row gutter={24}>
-          
-        </Row> */}
       </Form>
       </Card>
     )

@@ -1,46 +1,71 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@/components/Card'
+import { Form, Row, Col, Input, Button, Select, DatePicker, message, Modal, Table } from 'antd'
 import ButtonGroup from '@/components/ButtonGroup'
-import { Form, Input, Row, Col, Button, Select, Tag, Popconfirm, message, Modal } from 'antd'
-import { Link } from 'react-router-dom'
 import PagingTable from '@/components/PagingTable'
-import { useRequest, useTable } from '@dragon/hooks'
-import { deleteReduction, fetchList, getItem, saveItem, saveNo, saveRow, updateReduction } from '@/services/carbonAccount/reduction'
-import moment from 'moment'
-import router from 'umi/router'
 import useModalForm from '@/hooks/useModalForm'
-import { useSelector } from 'react-redux'
-import ModifyStatus from '@/pages/Reduction/Modal/ModifyStatus'
-import { dynamicMapExcel } from '@/services/carbon/dataManage'
-import ReduceExcelForm from '@/pages/Reduction/Modal/ReduceExcelForm'
-// import useDict from '@/hooks/useDict'
+import useDict from '@/hooks/useDict'
+import {getDataList, uploadFile, deleteData,dynamicExcel,getWaterList,saveshujudata,deleteDataall} from '@/services/carbon/dataManage'
+import { useTable, useRequest } from '@dragon/hooks'
+import router from 'umi/router'
+import {Link} from "react-router-dom";
+import ExcelForm from '@/pages/DataManage/List/Modal/ExcelForm'
+import { getSelectData } from '@/services/carbon/common'
 
-
-const List = (props) => {
+const Home = (props) => {
   const {
-    form: { getFieldDecorator, resetFields }
+    form: { getFieldDecorator, resetFields,getFieldsValue },
+    match: {
+      params: { type }
+    }
   } = props
 
-  const role = useSelector(({ user }) => user.role)
+  const { loading: addLoading, start: addReq } = useRequest(dynamicExcel, { manual: true })
 
-  const reset = () => {
-    router.push('/reduction/list')
-    resetFields()
-    searchBy()
+  const [yearList, setYearList] = useState([])
+  const [industryList, setIndustryList] = useState([])
+
+  const requestData = (params) => {
+
+    getSelectData(params).then((res) => {
+      setYearList(res.yearList || [])
+      setIndustryList(res.industryList || [])
+    })
   }
 
-  const { loading: addLoading, start: addReq } = useRequest(dynamicMapExcel, { manual: true })
+  useEffect(() => {
+    requestData()
+  }, [])
 
-  const tkForms = () => {
+  const renderForms = () => {
     return (
       <React.Fragment>
         {/* 新建表单 */}
-        <ReduceExcelForm {...addFormProps} />
+        <ExcelForm {...addFormProps} />
       </React.Fragment>
     )
   }
 
-  //新建的弹框
+  const tolog = () => {
+    Modal.confirm({
+      title: '是否跳转至日志页查看上传记录？',
+      content: '取消后刷新当前页',
+      onOk: () => {
+        // return deleteData(uids).then((res) => {
+        //   if (res instanceof Error) return
+        //   message.success('删除成功')
+        //   refresh()
+        // })
+        router.push('/dataManagement/importLog')
+      },
+      onCancel:()=>{
+        window.location.reload()
+        router.push('/dataManagement/allList')
+      }
+    })
+  }
+
+//新建的弹框
   const { open: openForm, props: addFormProps } = useModalForm({
     title: '选择导入模板',
     confirmLoading: addLoading,
@@ -49,22 +74,26 @@ const List = (props) => {
         ...v
       })
       if (res instanceof Error) return
-      message.success('导入成功')
-      window.location.reload()
-      router.push('/reduction')
+      message.success('任务提交成功,请留意录入日志哦！')
+      tolog()
+      // window.location.reload()
+      // router.push('/dataManagement/allList')
     }
   })
 
-  const { refresh,searchBy, submit, tableProps } = useTable(fetchList, {
-    form: props.form
-  })
-  const handleDelete = (bizNo) => {
-    console.log(bizNo)
+  const reset = () => {
+    router.push(`/dataManagement/allList`)
+    resetFields()
+    searchBy({year:'2021'})
+  }
+
+
+  const handleDelete = (uids) => {
     Modal.confirm({
       title: '确定删除？',
       content: '删除后不可恢复',
       onOk: () => {
-        return deleteReduction(bizNo).then((res) => {
+        return deleteData(uids).then((res) => {
           if (res instanceof Error) return
           message.success('删除成功')
           refresh()
@@ -72,201 +101,138 @@ const List = (props) => {
       }
     })
   }
-  const { loading: rejectLoading, start: rejectReq } = useRequest(updateReduction, { manual: true })
-  const [id, setId] = useState('')
-  const { open: openFormModify, props: modifyFormProps } = useModalForm({
-    title: '更改状态',
-    confirmLoading: rejectLoading,
-    afterValidate: async (v, close) => {
-      const res = await rejectReq({
-        bizNo: id,
-        ...v
-      })
-      if (res instanceof Error) return
-      message.success('更改状态成功成功')
-      router.push('/reduction/list')
-      refresh()
-    }
-  })
 
-  const renderForms = () => {
-    return (
-      <React.Fragment>
-        {/* 新建表单 */}
-        <ModifyStatus {...modifyFormProps} />
-      </React.Fragment>
-    )
+  const deleteall = () => {
+    Modal.confirm({
+      title: '确定删除当前筛选出的全部数据？',
+      content: '删除后不可恢复',
+      onOk: () => {
+        const data=getFieldsValue()
+        return deleteDataall(data).then((res) => {
+          if (res instanceof Error) return
+          message.success('删除成功')
+          refresh()
+        })
+      }
+    })
   }
 
-  //表头
-  const columns = useMemo(() => {
-    return [
+  const carbonModle = useDict('carbon_modle')
 
-      {
-        title: '项目名称',
-        dataIndex: 'extra.projectName',
-        width: 120,
+  //查询表单样式设置
+  const searchFormLayout = {
+    colon: true,
+    labelAlign: 'right',
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 }
+  }
 
-      },
-      {
-        title: '企业名称',
-        dataIndex: 'extra.companyName',
-        width: 120,
+  const { refresh, searchBy, submit, tableProps } = useTable(
+    getWaterList,
+    {
+      // defaultFilters: { status: type },
+      form: props.form
+    }
+  )
 
-      },
-      {
-        title: '描述',
-        dataIndex: 'extra.desc',
-        width: 120
-      },
-      {
-        title: '项目类型',
-        dataIndex: 'extra.scene',
-        width: 80,
-      },
-      // {
-      //   title: '状态',
-      //   dataIndex: 'extra.status',
-      //   width: 50,
-      //   render: (t) =>
-      //     t === '未激活' ? (
-      //       <Tag color="orange">{t}</Tag>
-      //     ) : (
-      //       // ) : t === '已激活' ? (
-      //       //   <Tag color="red">{t}</Tag>
-      //       <Tag color="green">{t}</Tag>
-      //     )
-      // },
-      {
-        title: '开始（并网）时间',
-        dataIndex: 'extra.startTime',
-        width: 100,
-        render: (t) => moment(t).format("YYYY-MM-DD HH:mm:ss")
-      },
-      {
-        title: '操作',
-        key: 'action',
-        width: 120,
-        render: (t, r) => {
-          return (
-            <ButtonGroup type="action">
-              <Button>
-                <Link to={{ pathname: `/reduction/view/${r.bizNo}` }}>查看</Link>
-              </Button>
-              <Button  auth="reduce_update" onClick={()=>{
-                saveItem(r)
-                router.push(`/reduction/edit/${r.bizNo}`)
-              }}>
-                {/*<Link to={{ pathname: `/reduction/edit/${r.bizNo}` }}>编辑</Link>*/}
-                编辑
-              </Button>
-              <Button auth={"reduce_delete"} onClick={() => handleDelete({ bizNos: r.bizNo })}>删除</Button>
-              {/* <Button
-                onClick={() => {
-                  openFormModify()
-                  setId(r.bizNo)
-                  saveRow(r)
-                }}
-              >
-                更改状态
-              </Button> */}
-            </ButtonGroup>
-          )
-        }
-      }
-    ]
+  useEffect(() => {
+    // requestListData()
+    searchBy({year:'2021'})
   }, [])
 
 
+  const columns = [
+    {
+      title: '编号',
+      dataIndex: 'year',
+      width: 100
+    },
+    {
+      title: '盒型种类',
+      dataIndex: 'month',
+      width: 100,
+      render(t,r){
+        if (t===undefined||t===null){
+          return "--";
+        }else {
+          return t;
+        }
+  }
+    },
+    {
+      title: '成品盒长(mm)',
+      dataIndex: 'date',
+      width: 120,
+      render(t,r){
+        if (t===undefined||t===null){
+          return "--";
+        }else {
+          return t;
+        }
+      }
+    },
 
-  const renderSearchForm = useCallback(() => {
-    const {
-      form: { getFieldDecorator }
-    } = props
-
-    const formLayout = {
-      labelAlign: 'left',
-      labelCol: { span: 5 },
-      wrapperCol: { span: 19 }
+    {
+      title: '成品盒宽(mm)',
+      dataIndex: 'companyName',
+      width:120
+    },
+    {
+      title: '成品盒高(mm)',
+      dataIndex: 'industry',
+      width:120,
+      render(t,r){
+        if (t===undefined||t===null){
+          return "--";
+        }else {
+          return t;
+        }
+      }
+    },
+    {
+      title: '所属供应商',
+      dataIndex: 'total',
+      width:150
+    },
+    {
+      title: '联系电话',
+      dataIndex: 'energyFrom',
+      width:120
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'sss',
+      width:100
+    },
+    {
+      title: '操作',
+      key: 'action',
+      width:100,
+      render: (t, r) => {
+        const uri = encodeURI(`${r.orgId} - ${r.energyFrom} -${ r.total}`)
+        return (
+          <ButtonGroup type="action">
+            <Button onClick={() => {
+              saveshujudata(r)
+              router.push(`/reduction/view`)
+              }}>查看
+              {/* <Link to={{ pathname: `/dataManagement/details/${uri}` }}>查看</Link> */}
+            </Button>
+          </ButtonGroup>
+        )
+      }
     }
-    //查询表单样式设置
-    const searchFormLayout = {
-      colon: true,
-      labelAlign: 'right',
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
-    }
-
-    return (
-      <Card style={{ paddingRight: 20 }}>
-      <Form {...searchFormLayout} onSubmit={submit}>
-        <Row gutter={24}>
-          <Col span={8}>
-            <Form.Item label="项目名称">
-              {getFieldDecorator('like&projectName')(<Input placeholder="请输入项目名称" />)}
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="项目类型">
-              {getFieldDecorator('eq&scene')(<Select>
-                <Select.Option key={1} value={"分布式光伏"}>分布式光伏</Select.Option>
-              </Select>)}
-            </Form.Item>
-          </Col>
-          {/* <Col span={8}>
-            <Form.Item label="状态">
-              {getFieldDecorator('eq&status')(<Select>
-                <Select.Option key={1} value={"在建"}>在建</Select.Option>
-                <Select.Option key={1} value={"已完成"}>已完成</Select.Option>
-              </Select>)}
-            </Form.Item>
-          </Col> */}
-          {/* <Col span={8}></Col>
-          <Col span={8}></Col> */}
-          <Col span={8}>
-            <ButtonGroup type="form" align="right">
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button onClick={reset}>重置</Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
-      </Form></Card>
-    )
-  }, [props, resetFields, submit])
+  ]
 
   return (
     <Card transparent>
-      {tkForms()}
-      {renderForms()}
       <Card style={{ marginTop: -10 }}>
-        {renderSearchForm()}
-         <ButtonGroup>
-          <Button to="/reduction/add" type="primary" auth={"reduce_add"}>
-            添加减排
-         </Button>
-         {/*{(role==='account_admin'||role==='account_super_admin')&&( <Button*/}
-         {/*    // to="wasteQuery/add"*/}
-         {/*  auth={"reduce_batch_import"}*/}
-         {/*    onClick={openForm}*/}
-         {/*    type="primary"*/}
-         {/*  >*/}
-         {/*    批量导入*/}
-         {/*  </Button>)}*/}
-           <Button
-             // to="wasteQuery/add"
-             auth={"reduce_batch_import"}
-             onClick={openForm}
-             type="primary"
-           >
-             批量导入
-           </Button>
-        </ButtonGroup>
-        <PagingTable rowKey={(i) => i.id} columns={columns} {...tableProps} />
+        {/* {SearchForm()} */}
+        {renderForms()}
+        <PagingTable rowKey={(i) => i.id} columns={columns} {...tableProps}/>
       </Card>
     </Card>
   )
 }
 
-export default Form.create()(List)
+export default Form.create()(Home)

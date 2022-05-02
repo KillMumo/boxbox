@@ -540,7 +540,7 @@ const Home = () => {
        {(role==='account_admin'||role==='account_super_admin'||role==='SHOW')&&(
          <div>
            {header()}
-         {adminpage()}
+         {/* {adminpage()} */}
          </div>
        )}
     </Card>

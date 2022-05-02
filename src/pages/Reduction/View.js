@@ -1,83 +1,67 @@
-import React,{ useEffect, useState} from 'react'
-import DescriptionList from '@/components/DescriptionList'
+import React, { useEffect, useMemo, useState} from 'react'
 import Card from '@/components/Card'
-import { getDictDetail } from '@/services/dict'
-import { Button } from 'antd'
-import { Link } from 'react-router-dom'
-import ButtonGroup from '@/components/ButtonGroup'
-import { useRequest } from '@dragon/hooks'
-import { fetchDetail } from '@/services/carbonAccount/reduction'
-import { getMethodList} from '@/services/carbonAccount/reduction'
-import DownloadItem from '@/components/DownloadItem'
+import {getDataList, uploadFile, deleteData,dynamicExcel,getOrgById,getshujudata} from '@/services/carbon/dataManage'
+import DescriptionList from '@/components/DescriptionList'
+import { formatTime } from '@/utils'
+import { Table, Tag,Button} from 'antd'
 
-const Description = DescriptionList.Description
+const { Description } = DescriptionList
+
 const View = (props) => {
   const {
-    params: { id }
-  } = props.match
+    match: {
+      params: {  }
+    }
+  } = props
+  const r=[]
+  const [data,setdata]=useState([])
 
-  const { loading, data: info = {} } = useRequest(() => fetchDetail({ bizNo:id }))
-
-  const buttonlayout = {
-    labelAlign: 'right',
-    labelCol: { span: 11 },
-    wrapperCol: { span: 13 },
-    colon: false
-  }
-
-  const [methodfile,setmethodfile]=useState([])
-
-  const requestMethod=()=>{
-    getMethodList().then((res)=>{
-      // console.log('mettttthod',res.records[0])
-      setmethodfile(res.records[0])
+  const requestdata=()=>{
+    getOrgById({orgId:getshujudata().orgId}).then((res)=>{
+      setdata(res)
     })
   }
 
+  const handleSubmit=()=>{
+
+  }
+
   useEffect(() => {
-    requestMethod()
+    requestdata()
   },[])
 
   return (
-    <Card loading={loading}>
-      <DescriptionList column={2}>
-        <Description label="项目编号">{info?.extra?.bizNo}</Description>
-        <Description label="项目名称">{info?.extra?.projectName}</Description>
-        <Description label="项目类型">{info?.extra?.methodScene}</Description>
-        <Description label="项目点">{info?.extra?.place[0]+info?.extra?.place[1]+info?.extra?.place[2]+info?.extra?.rest}</Description>
-        <Description label="建设规模(MW)">{info?.extra?.scale}</Description>
-        <Description label="备案文件号">{info?.extra?.fileNum}</Description>
-        <Description label="备案时间">{info?.extra?.fileTime}</Description>
-        <Description label="开始(并网)时间">{info?.extra?.startTime}</Description>
-        <Description label="项目备案证/产权证明文件" whole>
-          <DownloadItem list={info?.extra?.attachment|| []} />
-          {/* <a
-            onClick={() =>
-              window.open(
-                '/matrix/biz-file/downloadFile?path=' + encodeURI(info?.extra?.attachment[0]?.url)
-              )
-            }
+    <Card transparent>
+      <Card title="基本信息">
+        <DescriptionList>
+          <Description label="企业名称:"> {getshujudata()?.year}</Description>
+          <Description label="企业地址:"> {getshujudata()?.month}</Description>
+          <Description label="联系人姓名:"> {getshujudata()?.date||'--'}</Description>
+          <Description label="联系人电话:"> {getshujudata()?.companyName}</Description>
+          <Description label="成品长度(mm):"> {data?.orgCode||'--'}</Description>
+          <Description label="成品宽度(mm):"> {data?.legalPersonName||'--'}</Description>
+          <Description label="成品高度(mm):"> {data?.socialCreditCode||'--'}</Description>
+          <Description label="盒型种类:"> {data?.licenseNumber||'--'}</Description>
+          <Description label="最新编辑日期:"> {data?.scope||'--'}</Description>
+          <Description label="数字文件:"> {data?.orgType||'--'}</Description>
+          {/* <Description label="能源类型:"> {getshujudata()?.energyFrom}</Description>
+          <Description label="碳排放量(吨):"> {getshujudata()?.total}</Description> */}
+        </DescriptionList>
+        <div style={{marginLeft:"500px"}}>
+          <Button
+            // loading={updateLoading || submitLoading}
+            // loading={submitLoading}
+            type="primary"
+            htmlType="submit"
+            onClick={handleSubmit}
           >
-            {info?.extra?.attachment[0]?.name}
-          </a> */}
-        </Description>
-        <Description label="方法学版本" whole>
-            {/* <DownloadItem list={methodfile?.extra?.methodFile||[]} /> */}
-            <Button onClick={() => {
-              localStorage.setItem("methoddetail", JSON.stringify('分布式光伏'))
-              // router.push(`/methodMgr/view`,'_blank')
-              window.open(`/methodMgr/view`, '_blank')
-            }}>查看</Button>
-        </Description>
-        <Description label="描述" whole>
-          {info?.extra?.desc}
-        </Description>
-        <ButtonGroup {...buttonlayout}>
-          <Button >
-            <Link to={"/reduction/list"}>返回</Link>
+            通过
           </Button>
-        </ButtonGroup>
-      </DescriptionList>
+          <Button style={{ marginLeft: '10px' }} onClick={() => props.history.goBack()}>
+            驳回
+          </Button>
+          </div>
+      </Card>
 
     </Card>
   )

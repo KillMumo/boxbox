@@ -54,13 +54,13 @@ const routes = [
     routes: [
       { path: '/', redirect: '/home' },
       { path: '/home', exact: true, component: './Home', name: '首页' },
-      {
-        path: '/databoard',
-        routes: [
-          { path: '/databoard', redirect: '/databoard/view' },
-          { path: '/databoard/view', exact: true, name: '数据大屏', component: './DataBoard/List' }
-        ]
-      },
+      // {
+      //   path: '/databoard',
+      //   routes: [
+      //     { path: '/databoard', redirect: '/databoard/view' },
+      //     { path: '/databoard/view', exact: true, name: '数据大屏', component: './DataBoard/List' }
+      //   ]
+      // },
       {
         path: '/dataManagement',
         routes: [
@@ -78,84 +78,18 @@ const routes = [
             component: './DataManage/WaterList/details.js'
           },
           {
+            path: '/dataManagement/allList/add',
+            exact: true,
+            name: '新增模切版',
+            component: './DataManage/WaterList/Add.js'
+          },
+          { path: '/dataManagement/allList/:id', exact: true, name: '更新模切版信息', component: './DataManage/WaterList/Add.js' },
+
+          {
             path: '/dataManagement/dataReport',
             exact: true,
             name: '用户管理',
             component: './DataManage/List'
-          },
-          {
-            path: '/dataManagement/importLog',
-            exact: true,
-            name: '录入日志',
-            component: './DataManage/Loglist'
-          },
-          {
-            path: '/dataManagement/list/add',
-            exact: true,
-            name: '新增',
-            component: './DataManage/View'
-          },
-          {
-            path: '/dataManagement/list/edit/:companyName/:year',
-            exact: true,
-            name: '编辑',
-            component: './DataManage/View'
-          },
-          {
-            path: '/dataManagement/dataReport/:companyName/:year/:industry',
-            exact: true,
-            name: '详情',
-            component: './DataManage/View'
-          },
-          
-        ]
-      },
-      {
-        path: '/dataAnalysis',
-        routes: [
-          {
-            path: '/dataAnalysis/companyAnalysis',
-            routes: [
-              {
-                path: '/dataAnalysis/companyAnalysis',
-                exact: true,
-                name: '企业碳排概览',
-                component: './DataParam/List'
-              }
-            ]
-          },
-          {
-            path: '/dataAnalysis/industryAnalysis',
-            routes: [
-              {
-                path: '/dataAnalysis/industryAnalysis',
-                exact: true,
-                name: '行业碳排分析',
-                component: './DataParam/IndustryList'
-              }
-            ]
-          },
-          {
-            path: '/dataAnalysis/greenCompany',
-            routes: [
-              {
-                path: '/dataAnalysis/greenCompany',
-                exact: true,
-                name: '绿色制造企业',
-                component: './DataParam/greenCompany'
-              }
-            ]
-          },
-          {
-            path: '/dataAnalysis/KeyCompany',
-            routes: [
-              {
-                path: '/dataAnalysis/KeyCompany',
-                exact: true,
-                name: '重点碳排企业',
-                component: './DataParam/KeyCompany'
-              }
-            ]
           }
         ]
       },

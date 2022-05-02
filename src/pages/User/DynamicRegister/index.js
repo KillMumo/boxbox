@@ -69,7 +69,7 @@ const Register = (props) => {
 
   return (
     <div>
-      <div className={styles.title}>企业注册</div>
+      <div className={styles.title}>注册</div>
       <div className={styles.container}>
         <GlobalHeader
           left="注册"
@@ -82,9 +82,9 @@ const Register = (props) => {
         />
         <div className={styles.subContainer}>
           <Form form={form} {...formLayout} onSubmit={handleSubmit}>
-            <Panel title="企业基本信息">
+            {/* <Panel title="企业基本信息">
               <ConfigForm config={companyFormConfig} />
-            </Panel>
+            </Panel> */}
             <Panel title="管理员信息">
               <ConfigForm config={adminFormConfig} />
             </Panel>
