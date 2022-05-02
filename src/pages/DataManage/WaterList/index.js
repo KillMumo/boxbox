@@ -265,11 +265,14 @@ const Home = (props) => {
               })(
                 <Select>
                   <Select.Option value="6">全部</Select.Option>
-                  <Select.Option value="1">已通过</Select.Option>
-                  <Select.Option value="2">未认证</Select.Option>
-                  <Select.Option value="3">待审核</Select.Option>
-                  <Select.Option value="4">已退回</Select.Option>
-                  <Select.Option value="5">已驳回</Select.Option>
+                  <Select.Option value="1">扣盖式</Select.Option>
+                  <Select.Option value="2">手提式</Select.Option>
+                  <Select.Option value="3">粘接式</Select.Option>
+                  <Select.Option value="4">两页式</Select.Option>
+                  <Select.Option value="5">套盖式</Select.Option>
+                  <Select.Option value="5">摇盖盒</Select.Option>
+                  <Select.Option value="5">抽屉式</Select.Option>
+                  <Select.Option value="5">其他</Select.Option>
                 </Select>
               )}
             </Form.Item>
@@ -283,7 +286,14 @@ const Home = (props) => {
 
           <Col span={8}>
             <Form.Item label="审核状态">
-              {getFieldDecorator('companyname')(<Input placeholder="请输入"/>)}
+              {getFieldDecorator('status')(
+                <Select>
+                <Select.Option value="6">全部</Select.Option>
+                <Select.Option value="1">待审核</Select.Option>
+                <Select.Option value="2">已通过</Select.Option>
+                <Select.Option value="3">已驳回</Select.Option>
+              </Select>
+              )}
             </Form.Item>
           </Col>
 

@@ -138,9 +138,9 @@ const List = (props) => {
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item label="预期盒长范围">
-              {getFieldDecorator('orgName')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              {getFieldDecorator('length1')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
               ~
-              {getFieldDecorator('orgName2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
+              {getFieldDecorator('length2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -159,16 +159,19 @@ const List = (props) => {
           </Col>
           <Col span={8}>
             <Form.Item label="盒型种类">
-              {getFieldDecorator('status', {
+              {getFieldDecorator('type', {
                 initialValue: type
               })(
-                <Select onSelect={handleSelect}>
+                <Select>
                   <Select.Option value="6">全部</Select.Option>
-                  <Select.Option value="1">已通过</Select.Option>
-                  <Select.Option value="2">未认证</Select.Option>
-                  <Select.Option value="3">待审核</Select.Option>
-                  <Select.Option value="4">已退回</Select.Option>
-                  <Select.Option value="5">已驳回</Select.Option>
+                  <Select.Option value="1">扣盖式</Select.Option>
+                  <Select.Option value="2">手提式</Select.Option>
+                  <Select.Option value="3">粘接式</Select.Option>
+                  <Select.Option value="4">两页式</Select.Option>
+                  <Select.Option value="5">套盖式</Select.Option>
+                  <Select.Option value="5">摇盖盒</Select.Option>
+                  <Select.Option value="5">抽屉式</Select.Option>
+                  <Select.Option value="5">其他</Select.Option>
                 </Select>
               )}
             </Form.Item>

@@ -141,7 +141,7 @@ useEffect(()=>{
     <Card loading={getWasteLoading}>
       <Form {...formLayout}>
       <Form.Item label="供应商名称">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('companyname', {
             rules: [
               {
                 required: true,
@@ -152,8 +152,8 @@ useEffect(()=>{
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
-        <Form.Item label="企业地址">
-          {getFieldDecorator('projectName', {
+        <Form.Item label="供应商地址">
+          {getFieldDecorator('address', {
             rules: [
               {
                 required: true,
@@ -165,7 +165,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="联系人姓名">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
@@ -177,7 +177,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="联系人电话">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('number', {
             rules: [
               {
                 required: true,
@@ -189,7 +189,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="成品盒长">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('finallength', {
             rules: [
               {
                 required: true,
@@ -201,7 +201,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="成品盒宽">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('finalwidth', {
             rules: [
               {
                 required: true,
@@ -213,7 +213,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="成品盒高">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('finalheight', {
             rules: [
               {
                 required: true,
@@ -225,7 +225,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="盒型种类">
-          {getFieldDecorator('projectName', {
+          {getFieldDecorator('type', {
             rules: [
               {
                 required: true,
@@ -237,7 +237,7 @@ useEffect(()=>{
         </Form.Item>
 
         <Form.Item label="数字文件">
-          {getFieldDecorator('attachment', {
+          {getFieldDecorator('boxfile', {
             initialValue: (getItem()?.extra?.attachment || []).map((f) => ({
               uid: f.uid,
               name: f.name,

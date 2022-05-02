@@ -29,8 +29,8 @@ const Page = (props) => {
     <Card transparent loading={getDetailLoading}>
       <Card title="供应商基本信息" style={{marginBottom:'16px'}}>
         <D>
-          <I label="企业名称">{companyBasicInfo.orgName}</I>
-          <I label="企业地址">{companyBasicInfo.orgType}</I>
+          <I label="供应商名称">{companyBasicInfo.orgName}</I>
+          <I label="供应商地址">{companyBasicInfo.orgType}</I>
           <I label="联系人姓名">{legalPerson.legalPersonName}</I>
           <I label="联系人电话">{legalPerson.legalPersonIdCard}</I>
         </D>
