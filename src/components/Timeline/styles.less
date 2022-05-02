@@ -1,0 +1,50 @@
+.container {
+  padding-top: 5px;
+  position: relative;
+  overflow: hidden;
+  &.folded {
+    height: 232px;
+  }
+  .fold {
+    cursor: pointer;
+    position: absolute;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+  }
+}
+
+.current {
+  display: inline-block;
+}
+
+.action {
+  display: inline-block;
+  margin-left: 24px;
+  font-weight:400;
+  color:rgba(0,0,0,0.45);
+}
+
+.extra {
+  margin-top: 8px;
+  padding: 12px 18px;
+  background:rgba(234,233,233,0.3);
+  border-radius:4px;
+  .extraTitle {
+    display: block;
+  }
+}
+
+// 覆盖antd样式
+// :global {
+//   .ant-timeline-item-last {
+//     padding: 0;
+//     .ant-timeline-item-content {
+//       min-height: 0;
+//     }
+//   }
+// }

@@ -1,0 +1,60 @@
+.list {
+  :global {
+    .ant-list-item {
+    }
+    .ant-list-item-meta {
+      align-items: center;
+    }
+    .ant-list-item-action {
+      display: none;
+      margin-left: 14px;
+    }
+    .ant-list-item-meta-title {
+      width: 177px;
+    }
+    .ant-list-item:hover .ant-list-item-action {
+      display: block;
+    }
+  }
+}
+.bottom {
+  position: absolute;
+  right: 0;
+  bottom: 64px;
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid #e9e9e9;
+  padding: 10px 16px;
+  background: #fff;
+  text-align: center;
+  .button {
+    width: 200px;
+  }
+}
+.drawer {
+  top: 64px;
+}
+
+.tableData {
+  display: flex;
+  align-items: center;
+  .disableText {
+    display: flex;
+    align-items: center;
+    .tip {
+      display: none;
+      width: 89px;
+      height: 21px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+      text-align: center;
+      line-height: 21px;
+    }
+  }
+
+  .disableText:hover .tip {
+    display: block;
+  }
+}

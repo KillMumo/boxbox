@@ -1,0 +1,46 @@
+.container {
+  margin: 18px 18px -18px;
+  border-radius: 2px;
+
+  :global {
+    .ant-anchor-ink {
+      display: none;
+    }
+
+    .ant-affix {
+      z-index: 999;
+      top: 64px !important;
+    }
+
+    .ant-anchor {
+      padding-left: 0;
+      display: flex;
+    }
+    .ant-anchor-link {
+      padding: 0;
+      width: 140px;
+      line-height: 52px;
+      text-align: center;
+
+      &.ant-anchor-link-active {
+        position: relative;
+        border-top: 2px solid @primary-color;
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background:@primary-color;
+          opacity: 0.2;
+        }
+
+        .ant-anchor-link-title-active {
+          color: @primary-color;
+        }
+      }
+    }
+  }
+}

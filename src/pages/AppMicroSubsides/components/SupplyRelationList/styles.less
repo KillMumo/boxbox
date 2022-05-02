@@ -1,0 +1,31 @@
+.container {
+    padding-top: 5px;
+    // border: 1px solid rgba(238, 238, 238, 1);
+    // position: relative;
+    overflow: hidden;
+    
+    .fold {
+      cursor: pointer;
+      position: absolute;
+      height: 30px;
+      line-height: 24px;
+      text-align: center;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      color: rgba(0, 0, 0, 0.65);
+    }
+    .card {
+      margin-top: 16px;
+      border-bottom: 1px solid rgba(233, 233, 233, 1);
+      &:first-child{
+        margin-top: 0;
+      }
+      &:last-child{
+        margin-bottom: 10px;
+        border-bottom: none;
+      }
+    }
+  }
+  

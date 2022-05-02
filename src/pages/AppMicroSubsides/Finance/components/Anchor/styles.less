@@ -1,0 +1,17 @@
+.father {
+  height: 56px;
+}
+.container {
+  &.fixed {
+    position: fixed;
+    z-index: 99;
+    top: 65px;
+    width: 100%;
+  }
+  :global {
+    .ant-card-body {
+      border: none;
+      padding: 0;
+    }
+  }
+}

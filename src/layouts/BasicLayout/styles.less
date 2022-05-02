@@ -1,0 +1,126 @@
+.container {
+  min-width: 1200px;
+  .content {
+    padding-left: 200px;
+    background: #f7f7f7;
+    &.mobile {
+      padding-left: 0;
+    }
+    &.hidePadding {
+      padding-left: 0;
+    }
+  }
+  .menu {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    z-index: 99;
+  }
+  .account {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+    height: 100%;
+    cursor: pointer;
+    .avatar {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f7f7f7;
+      margin-right: 7px;
+      margin-left: 30px;
+      vertical-align: middle;
+    }
+    .info {
+      color: black;
+      line-height: 20px;
+      div {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .changeClick {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+  .burger {
+    color: #fff;
+    font-size: 24px;
+  }
+}
+
+.drawer {
+  opacity: 1;
+  :global {
+    .ant-drawer-body {
+      padding: 0;
+      height: 100%;
+    }
+  }
+}
+
+.messageBox {
+  width: 338px;
+  padding: 0 2px;
+}
+
+.messageContent {
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: -18px;
+  margin-right: -18px;
+}
+
+.messageLi {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  &:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+  }
+}
+.messageBadge {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 145px;
+}
+.msgData {
+  color: #999;
+  font-size: 12px;
+}
+
+.messageBtn {
+  text-align: center;
+  background-color: #f7f7f7;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 -18px -26px -18px;
+  padding: 0 5px;
+  border-top: 1px solid rgba(221, 221, 221, 0.5);
+}
+
+:global {
+  .antd-pro-components-global-header-index-headerContent {
+    background: #303a4a;
+  }
+  .antd-pro-layouts-basic-layout-styles-container
+  .antd-pro-layouts-basic-layout-styles-account
+  .antd-pro-layouts-basic-layout-styles-info {
+    color: #fff;
+  }
+}
+
+

@@ -1,0 +1,35 @@
+:global {
+  .d-input-number {
+    position: relative;
+    height: 32px;
+    .d-addon-after {
+      z-index: 9;
+      position: absolute;
+      top: 5px;
+      right: 1px;
+      bottom: 0px;
+
+      transition: all 0.3s;
+
+      padding: 0 11px;
+      color: rgba(0, 0, 0, 0.65);
+      font-weight: 400;
+      font-size: 14px;
+      text-align: center;
+      background-color: #fafafa;
+      border-left: 1px solid #d9d9d9;
+      border-radius: 0 4px 4px 0;
+      line-height: 32px;
+      height: 30px;
+    }
+    .no-addon-after {
+      display: none;
+    }
+  }
+  .has-error {
+    .d-addon-after {
+      border-color: @error-color;
+      color: @error-color;
+    }
+  }
+}

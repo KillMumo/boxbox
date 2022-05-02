@@ -1,0 +1,44 @@
+.panel {
+  margin-bottom: 8px;
+  .items {
+    overflow: hidden;
+    margin: 0 -16px;
+  }
+
+  &:last-child {
+    margin-bottom: -16px;
+  }
+}
+
+.item {
+  transition: all .3s;
+  cursor: pointer;
+  background: #fafafa;
+  border: 1px solid #e8eaec;
+  width: 120px;
+  height: 120px;
+  float: left;
+  padding: 16px;
+  margin: 16px;
+  text-align: center;
+
+  .icon {
+    border-radius: 10px;
+    font-size: 45px;
+    color: #fff;
+    background: #fda32b;
+    height: 60px;
+    width: 60px;
+    margin: 0 auto;
+    font-size: 40px;
+  }
+  .desc {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    border-color: #eee;
+  }
+}

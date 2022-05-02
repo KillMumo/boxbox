@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  :global {
+    .ant-upload-picture-card-wrapper {
+      display: flex;
+      margin-bottom: -10px;
+      width: auto;
+    }
+    .ant-upload.ant-upload-select-picture-card,
+    .ant-upload-list-picture-card-container,
+    .ant-upload-list-picture-card .ant-upload-list-item {
+      width: 100px;
+      height: 100px;
+    }
+    .ant-upload {
+      width: 100%;
+    }
+  }
+  .exampleContainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    border: 1px dashed rgba(217, 217, 217, 1);
+    padding: 7px;
+    // position: relative;
+    .pic{
+      width: 86px;
+    }
+    .text {
+      // position: absolute;
+      // left: 50%;
+      // transform: translateX(-50%);
+      width: 56px;
+      margin: 0 auto;
+      font-size:12px;
+      color:rgba(0,0,0,0.45);
+    }
+  }
+}
+.wrap {
+  :global {
+    .ant-modal-body {
+      padding: 35px;
+    }
+  }
+}

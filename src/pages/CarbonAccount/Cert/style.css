@@ -1,0 +1,153 @@
+
+.wrap {
+  word-wrap: break-word;
+  word-break: normal;
+  overflow: hidden;
+}
+
+.container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.box1{
+  height:165px;
+  background-color:rgba(57, 63, 59, 0.03);
+  position: relative;
+  margin-bottom: 27px;
+}
+
+.pic1{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 120px;
+  height: 165px;
+  background-image: url('./image/证明.png');
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.title{
+  /* position: absolute;
+  left: 0px;
+  top: 0px; */
+  width: 428px;
+  height: 44px;
+  background: linear-gradient(270deg, rgba(107, 208, 155, 0) 0%, rgba(57, 163, 98, 0.09) 100%);
+  /* opacity: 0.09; */
+  font-size: 14px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+  padding:13px 30px;
+}
+
+.smallbox{
+  /* background-color:green; */
+  height:121px;
+  text-align:center;
+  padding-top: 22px;
+}
+
+.name{
+  display: block;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+
+.num{
+  display: block;
+  font-size: 30px;
+  font-family: DINAlternate-Bold, DINAlternate;
+  font-weight: bold;
+  color: #000000;
+  line-height: 35px;
+}
+
+.box2{
+  width: 170px;
+  height: 20px;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 20px;
+  margin-bottom:10px;
+}
+
+.box2num{
+  width: 65px;
+  height: 35px;
+  font-size: 30px;
+  font-family: DINAlternate-Bold, DINAlternate;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom:24px;
+  line-height: 35px;
+}
+
+.box3{
+  width:820px;
+  height:380px;
+  position: relative;
+}
+
+.carbonpic1{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 310px;
+  background-image: url('./image/绿币证明.png');
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.carbonpic2{
+  position: absolute;
+  left: 300px;
+  top: 0;
+  width: 220px;
+  height: 310px;
+  background-image: url('./image/碳中和证明.png');
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.carbonpic3{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 220px;
+  height: 310px;
+  background-image: url('./image/减排证明.png');
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.carbonbutton1{
+  position: absolute;
+  left: 60px;
+  top: 330px;
+}
+
+.carbonbutton2{
+  position: absolute;
+  left: 360px;
+  top: 330px;
+}
+
+.carbonbutton3{
+  position: absolute;
+  right: 60px;
+  top: 330px;
+}

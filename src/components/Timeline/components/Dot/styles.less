@@ -1,0 +1,15 @@
+.container {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d8d8d8;
+  &.processing {
+    background: @primary-color;
+    box-shadow: 0 0 1px 3px #E5F3Fb;
+  }
+  &.error {
+    background: @error-color;
+    box-shadow: 0 0 1px 3px #fbe5e5;
+  }
+}

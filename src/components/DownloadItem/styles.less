@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  align-items: center;
+  line-height: 40px;
+  max-width: 600px;
+  height: 40px;
+  padding: 0 5px 0 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(238, 238, 238, 1);
+  margin-bottom: 16px;
+  background: #fff;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.block {
+    display: block;
+  }
+  .icon {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 28px;
+    margin-right: 8px;
+    
+  }
+
+  .pic{
+    height: 28px;
+    width: 28px;
+    line-height: 40px;
+    font-size: 18px;
+    margin-right: 8px;
+  }
+
+  .name {
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    margin-right: 8px;
+    &.pointer {
+      cursor: pointer;
+    }
+  }
+  .download {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+  }
+}
+
+.excel {
+  font-size: 18px;
+  color: @success-color;
+}
+.zip {
+  font-size: 18px;
+  color: @warning-color;
+}
+.pdf {
+  font-size: 18px;
+  color: @error-color;
+}
