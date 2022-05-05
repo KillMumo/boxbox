@@ -33,14 +33,16 @@ const Login = (props) => {
         className={styles.container}
         style={{
           backgroundImage: 'url("/登陆页bg.jpg")',
+          // backgroundImage: 'url("/bgimg.jpeg")',
           // backgroundImage: 'url(' + `${pageConfig?.backgroundImage}` + ')',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 0'
+          backgroundPosition: 'center 0',
+          // filter: "blur(10px)"
         }}
       >
-        <div className={styles.logo}>
-          <img className={styles.img} src="/logo_登录.png" alt="" />
+        <div className={styles.logo} style={{zIndex:100}}>
+          <img className={styles.img} src="/盒子.png" alt="" />
           {/* <img className={styles.img} src={pageConfig?.icon} alt="" /> */}
           {/* {pageConfig?.name} */}
           包装盒型管理系统

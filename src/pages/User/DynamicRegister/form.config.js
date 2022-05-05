@@ -160,6 +160,7 @@ export const useCompanyConfig = (form) => {
 export const useAdminConfig = (form) => {
   const { getFieldValue } = form
 
+  const [onshow,setonshow]=useState(true)
   // 检查时候密码一致
   const checkConfirm = (rule, value, callback) => {
     if (value && value !== getFieldValue('orgAdminPassword')) {
@@ -169,6 +170,12 @@ export const useAdminConfig = (form) => {
     }
   }
 
+  const changerole=(e)=>{
+    // console.log('pppp',e)
+    if(e==='0') setonshow(false)
+    else setonshow(true)
+  }
+
   const { loading: sending, send } = useCountDown('register', {
     form,
     validateFieldsName: 'orgAdminPhone'
@@ -176,20 +183,43 @@ export const useAdminConfig = (form) => {
 
   return [
     {
-      itemProps: { label: '注册角色' },
-      condition: {
-        required: true,
-        name: '姓名',
-        length: { min: 1, max: 10 }
+        itemProps: { label: '选择注册角色' },
+        rules: [{ required: true, message: '请选择' }],
+        name: 'role',
+        children: (
+          <Select placeholder="请选择" onChange={changerole}>
+            <Select.Option key={'0'} value={'0'}>
+              供应商
+            </Select.Option>
+            <Select.Option key={'1'} value={'1'}>
+              客户
+            </Select.Option>
+          </Select>
+        )
       },
-      name: 'orgAdminName1',
-      children: 
-      <Select>
-        <Select.Option value={0}>供应商</Select.Option>
-        <Select.Option value={1}>客户</Select.Option>
-      </Select>
-    },
-    {
+      {
+        itemProps: { label: '供应商名称' },
+        condition: {
+          required: true,
+          name: '供应商名称',
+          length: { min: 1, max: 10 }
+        },
+        name: 'companyname',
+        children: <Input placeholder="请输入" />,
+        hidden:onshow
+      },
+      {
+        itemProps: { label: '供应商地址' },
+        condition: {
+          required: true,
+          name: '供应商地址',
+          length: { min: 1, max: 10 }
+        },
+        name: 'address',
+        children: <Input placeholder="请输入" />,
+        hidden:onshow
+      },
+     {
       itemProps: { label: '管理员姓名' },
       condition: {
         required: true,

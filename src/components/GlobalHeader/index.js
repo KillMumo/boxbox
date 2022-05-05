@@ -5,7 +5,7 @@ import styles from './index.less'
 // import { useSelector } from 'react-redux'
 // import logo from '../../assets/logo/logo.jpg'
 // import logo from '@/pages/User/Login/image/accountLogo.png'
-import logo from '@/pages/User/Login/image/logo_登录.png'
+import logo from '@/pages/User/Login/image/盒子.png'
 
 const GlobalHeader = (props) => {
   const { right, left, burger } = props
