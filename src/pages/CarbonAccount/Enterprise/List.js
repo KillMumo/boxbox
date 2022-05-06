@@ -153,14 +153,14 @@ const List = (props) => {
           </Col>
           <Col span={8}>
             <Form.Item label="预期盒宽范围">
-              {getFieldDecorator('width')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              {getFieldDecorator('width1')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
               ~
               {getFieldDecorator('width2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="预期盒高范围">
-              {getFieldDecorator('height')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
+              {getFieldDecorator('height1')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginRight:"10px"}}/>)}
               ~
               {getFieldDecorator('height2')(<Input placeholder="请输入" addonAfter="mm" style={{width:'140px',marginLeft:"10px"}}/>)}
             </Form.Item>

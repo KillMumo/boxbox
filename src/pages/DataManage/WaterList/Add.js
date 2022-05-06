@@ -63,6 +63,7 @@ const Add = (props) => {
           // values.optTime = moment(values.optTime).format('YYYY-MM-DD HH:mm:ss');
           const params = {
             // bizNo:getmethoddata().bizNo,
+            // "boxfile":"teste",
             ...values
           }
           // console.log('ggggggggggg',params)
@@ -175,7 +176,7 @@ const Add = (props) => {
         </Form.Item>
 
         <Form.Item label="数字文件">
-          {getFieldDecorator('boxfile', {
+          {getFieldDecorator('boxfileList', {
             // initialValue: (getItem()?.extra?.attachment || []).map((f) => ({
             //   uid: f.uid,
             //   name: f.name,
