@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/Card'
-import { Form, Row, Col, Input, Button, Select, DatePicker, message, Modal, Table } from 'antd'
+import { Form, Row, Col, Input, Button, Select,  message, Modal, Table } from 'antd'
 import ButtonGroup from '@/components/ButtonGroup'
-import PagingTable from '@/components/PagingTable'
-import useModalForm from '@/hooks/useModalForm'
-import useDict from '@/hooks/useDict'
-import {getDataList, uploadFile, deleteData,dynamicExcel,getWaterList,saveshujudata,deleteDataall} from '@/services/carbon/dataManage'
-import { useTable, useRequest } from '@dragon/hooks'
-import router from 'umi/router'
-import {Link} from "react-router-dom";
-import ExcelForm from '@/pages/DataManage/List/Modal/ExcelForm'
-import { getSelectData } from '@/services/carbon/common'
+import { deleteData,deleteDataall} from '@/services/carbon/dataManage'
+import { getList } from '@/services/box'
 
 const Home = (props) => {
   const {
@@ -20,83 +13,34 @@ const Home = (props) => {
     }
   } = props
 
-  const { loading: addLoading, start: addReq } = useRequest(dynamicExcel, { manual: true })
+  const[data,setdata]=useState([])
 
-  const [yearList, setYearList] = useState([])
-  const [industryList, setIndustryList] = useState([])
-
-  const requestData = (params) => {
-
-    getSelectData(params).then((res) => {
-      setYearList(res.yearList || [])
-      setIndustryList(res.industryList || [])
+  const requestlist1=()=>{
+    getList({}).then((res)=>{
+      setdata(res)
+    })
+  }
+ 
+  const submit=()=>{
+    getList(getFieldsValue()).then((res)=>{
+      setdata(res)
     })
   }
 
-  useEffect(() => {
-    requestData()
-  }, [])
-
-  const renderForms = () => {
-    return (
-      <React.Fragment>
-        {/* 新建表单 */}
-        <ExcelForm {...addFormProps} />
-      </React.Fragment>
-    )
-  }
-
-  const tolog = () => {
-    Modal.confirm({
-      title: '是否跳转至日志页查看上传记录？',
-      content: '取消后刷新当前页',
-      onOk: () => {
-        // return deleteData(uids).then((res) => {
-        //   if (res instanceof Error) return
-        //   message.success('删除成功')
-        //   refresh()
-        // })
-        router.push('/dataManagement/importLog')
-      },
-      onCancel:()=>{
-        window.location.reload()
-        router.push('/dataManagement/allList')
-      }
-    })
-  }
-
-//新建的弹框
-  const { open: openForm, props: addFormProps } = useModalForm({
-    title: '选择导入模板',
-    confirmLoading: addLoading,
-    afterValidate: async (v, close) => {
-      const res = await addReq({
-        ...v
-      })
-      if (res instanceof Error) return
-      message.success('任务提交成功,请留意录入日志哦！')
-      tolog()
-      // window.location.reload()
-      // router.push('/dataManagement/allList')
-    }
-  })
-
-  const reset = () => {
-    router.push(`/dataManagement/allList`)
-    resetFields()
-    searchBy({year:'2021'})
-  }
+  useEffect(()=>{
+    requestlist1()
+  },[])
 
 
-  const handleDelete = (uids) => {
+  const handleDelete = () => {
     Modal.confirm({
       title: '确定删除？',
       content: '删除后不可恢复',
       onOk: () => {
-        return deleteData(uids).then((res) => {
+        return deleteData().then((res) => {
           if (res instanceof Error) return
           message.success('删除成功')
-          refresh()
+          // refresh()
         })
       }
     })
@@ -111,13 +55,10 @@ const Home = (props) => {
         return deleteDataall(data).then((res) => {
           if (res instanceof Error) return
           message.success('删除成功')
-          refresh()
         })
       }
     })
   }
-
-  const carbonModle = useDict('carbon_modle')
 
   //查询表单样式设置
   const searchFormLayout = {
@@ -127,41 +68,21 @@ const Home = (props) => {
     wrapperCol: { span: 18 }
   }
 
-  const { refresh, searchBy, submit, tableProps } = useTable(
-    getWaterList,
-    {
-      // defaultFilters: { status: type },
-      form: props.form
-    }
-  )
-
-  useEffect(() => {
-    // requestListData()
-    searchBy({year:'2021'})
-  }, [])
-
-
   const columns = [
     {
       title: '编号',
-      dataIndex: 'year',
-      width: 100
+      dataIndex: 'bizNo',
+      width: 140,
+      ellipsis: true
     },
     {
       title: '盒型种类',
-      dataIndex: 'month',
-      width: 100,
-      render(t,r){
-        if (t===undefined||t===null){
-          return "--";
-        }else {
-          return t;
-        }
-  }
+      dataIndex: 'type',
+      width: 100
     },
     {
       title: '成品盒长(mm)',
-      dataIndex: 'date',
+      dataIndex: 'finallength',
       width: 120,
       render(t,r){
         if (t===undefined||t===null){
@@ -174,12 +95,12 @@ const Home = (props) => {
 
     {
       title: '成品盒宽(mm)',
-      dataIndex: 'companyName',
+      dataIndex: 'finalwidth',
       width:120
     },
     {
       title: '成品盒高(mm)',
-      dataIndex: 'industry',
+      dataIndex: 'finalheight',
       width:120,
       render(t,r){
         if (t===undefined||t===null){
@@ -191,17 +112,17 @@ const Home = (props) => {
     },
     {
       title: '所属供应商',
-      dataIndex: 'total',
+      dataIndex: 'companyname',
       width:150
     },
     {
       title: '联系电话',
-      dataIndex: 'energyFrom',
+      dataIndex: 'number',
       width:120
     },
     {
       title: '审核状态',
-      dataIndex: 'sss',
+      dataIndex: 'status',
       width:80
     },
     {
@@ -209,16 +130,16 @@ const Home = (props) => {
       key: 'action',
       width:100,
       render: (t, r) => {
-        const uri = encodeURI(`${r.orgId} - ${r.energyFrom} -${ r.total}`)
+        // const uri = encodeURI(`${r.orgId} - ${r.energyFrom} -${ r.total}`)
         return (
           <ButtonGroup type="action">
             <Button onClick={() => {
-              saveshujudata(r)
-              router.push(`/dataManagement/allList/details`)
+              // saveshujudata(r)
+              // router.push(`/dataManagement/allList/details`)
               }}>查看
               {/* <Link to={{ pathname: `/dataManagement/details/${uri}` }}>查看</Link> */}
             </Button>
-            <Button onClick={() => handleDelete({ uids: r.uid })}>删除</Button>
+            <Button onClick={() => handleDelete()}>删除</Button>
             <Button onClick={()=>{
                 // saveItem(r)
                 // router.push(`/reduction/edit/${r.uid}`)
@@ -233,9 +154,17 @@ const Home = (props) => {
   ]
 
   const SearchForm = () => {
+
+    const handelReset = () => {
+      resetFields()
+      getList({}).then((res)=>{
+        setdata(res)
+      })
+    }
+
     return (
       <Card style={{ paddingRight: 20 }}>
-        <Form {...searchFormLayout} onSubmit={submit}>
+        <Form {...searchFormLayout}>
           <Row gutter={24}>
           <Col span={8}>
             <Form.Item label="预期盒长范围">
@@ -264,15 +193,15 @@ const Home = (props) => {
                 initialValue: type
               })(
                 <Select>
-                  <Select.Option value="6">全部</Select.Option>
-                  <Select.Option value="1">扣盖式</Select.Option>
-                  <Select.Option value="2">手提式</Select.Option>
-                  <Select.Option value="3">粘接式</Select.Option>
-                  <Select.Option value="4">两页式</Select.Option>
-                  <Select.Option value="5">套盖式</Select.Option>
-                  <Select.Option value="5">摇盖盒</Select.Option>
-                  <Select.Option value="5">抽屉式</Select.Option>
-                  <Select.Option value="5">其他</Select.Option>
+                  <Select.Option value="">全部</Select.Option>
+                  <Select.Option value="扣盖式">扣盖式</Select.Option>
+                  <Select.Option value="手提式">手提式</Select.Option>
+                  <Select.Option value="粘接式">粘接式</Select.Option>
+                  <Select.Option value="两页式">两页式</Select.Option>
+                  <Select.Option value="套盖式">套盖式</Select.Option>
+                  <Select.Option value="摇盖盒">摇盖盒</Select.Option>
+                  <Select.Option value="抽屉式">抽屉式</Select.Option>
+                  <Select.Option value="其他">其他</Select.Option>
                 </Select>
               )}
             </Form.Item>
@@ -302,10 +231,11 @@ const Home = (props) => {
                     <Button
                       type="primary"
                       htmlType="submit"
+                      onClick={submit}
                     >
                       查询
                     </Button>
-                    <Button onClick={reset}>重置</Button>
+                    <Button onClick={handelReset}>重置</Button>
                   </ButtonGroup>
             </Col>
           </Row>
@@ -318,7 +248,7 @@ const Home = (props) => {
     <Card transparent>
       <Card style={{ marginTop: -10 }}>
         {SearchForm()}
-        {renderForms()}
+        {/* {renderForms()} */}
         <ButtonGroup>
           <Button
             // to="wasteQuery/add"
@@ -337,8 +267,8 @@ const Home = (props) => {
             批量删除
           </Button>
         </ButtonGroup>
-        <PagingTable rowKey={(i) => i.id} columns={columns} {...tableProps}/>
-
+        {/* <PagingTable rowKey={(i) => i.id} columns={columns} {...tableProps}/>
+         */}
         {/*<Table*/}
         {/*  loading={loading}*/}
         {/*  rowKey="companyName"*/}
@@ -346,6 +276,7 @@ const Home = (props) => {
         {/*  dataSource={dataSource}*/}
         {/*  pagination={{pageSize: 10}}*/}
         {/*/>*/}
+       <Table dataSource={data} columns={columns}></Table>
       </Card>
     </Card>
   )

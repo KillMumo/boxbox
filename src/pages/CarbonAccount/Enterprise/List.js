@@ -1,13 +1,9 @@
-import React, { useMemo } from 'react'
-import { Input, Select, Row, Col, Button, Form } from 'antd'
-import PagingTable from '@/components/PagingTable'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Input, Select, Row, Col, Button, Form ,Table} from 'antd'
 import ButtonGroup from '@/components/ButtonGroup'
-import { useTable } from '@dragon/hooks'
 import Card from '@/components/Card'
-import { checkList } from '@/services/enterprise'
+import { getList,saveshuju } from '@/services/box'
 import router from 'umi/router'
-// import { searchFormLayout } from '@/common/config'
-import { companyStatus } from '@/common/dict'
 
 const searchFormLayout = {
   colon: true,
@@ -18,17 +14,29 @@ const searchFormLayout = {
 
 const List = (props) => {
   const {
-    form: { getFieldDecorator, resetFields },
+    form: { getFieldDecorator, resetFields,getFieldsValue },
     match: {
       params: { type }
     }
   } = props
 
-  // 列表查询
-  const { searchBy, tableProps, submit } = useTable(checkList, {
-    form: props.form,
-    defaultFilters: { status: type }
-  })
+  const[data,setdata]=useState([])
+
+  const requestlist1=()=>{
+    getList({}).then((res)=>{
+      setdata(res)
+    })
+  }
+ 
+  const submit=()=>{
+    getList(getFieldsValue()).then((res)=>{
+      setdata(res)
+    })
+  }
+
+  useEffect(()=>{
+    requestlist1()
+  },[])
 
   const columns = useMemo(() => {
     const getActionMap = (r) => {
@@ -45,70 +53,77 @@ const List = (props) => {
     return [
       {
         title: '编号',
-        dataIndex: 'orgName',
+        dataIndex: 'bizNo',
         // fixed: 'left',
-        width: 180,
+        width: 140,
         ellipsis: true
       },
       {
         title: '盒型种类',
-        dataIndex: 'industry',
+        dataIndex: 'type',
         // fixed: 'left',
-        width: 150,
+        width: 100,
         ellipsis: true,
         // render: (t) => (t === '0' ? '供应商' : '客户')
       },
       {
         title: '成品盒长(mm)',
-        dataIndex: 'legalPersonName',
-        width: 90,
+        dataIndex: 'finallength',
+        width: 120,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
         title: '成品盒宽(mm)',
-        dataIndex: 'adminName',
+        dataIndex: 'finalwidth',
         width: 120,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
         title: '成品盒高(mm)',
-        dataIndex: 'adminPhone',
-        width: 140,
+        dataIndex: 'finalheight',
+        width: 120,
         ellipsis: true,
         render: (t) => t || '-'
       },
       {
         title: '所属供应商',
-        dataIndex: 'status',
-        width: 80,
+        dataIndex: 'companyname',
+        width: 150,
         ellipsis: true,
-        render: (t) => companyStatus[t]?.name
+        // render: (t) => companyStatus[t]?.name
       },
       {
         title: '联系电话',
-        dataIndex: 'createTime',
+        dataIndex: 'number',
         width: 120,
         ellipsis: true
       },
       {
         title: '日期',
-        dataIndex: 'createTime',
+        dataIndex: 'date',
         width: 120,
         ellipsis: true
       },
       {
         title: '操作',
         key: 'action',
-        width: 100,
+        width: 80,
         ellipsis: true,
         render: (t, r) => {
-          const { name, ...props } = getActionMap(r)[r.status] || {}
-
           return (
             <ButtonGroup type="action">
-              <Button {...props}>{name}</Button>
+            <Button
+              onClick={() => {
+                saveshuju(r)
+                // router.push(`/reduction/view`)
+                router.push('/msEnterprise/view');
+              }}
+            >
+              查看
+              {/* <Link to={{ pathname: `/dataManagement/details/${uri}` }}>查看</Link> */}
+            </Button>
             </ButtonGroup>
           )
         }
@@ -117,24 +132,17 @@ const List = (props) => {
   }, [])
 
   const renderSearchForm = () => {
-    const handleSelect = (v) => {
-      router.push(`/msEnterprise/list/${v}`)
-      searchBy((r) => ({ ...r, status: v }))
-    }
-
-    const handleType = (v) => {
-      searchBy((r) => ({ ...r, cmyType: v }))
-    }
 
     const handelReset = () => {
-      router.push(`/msEnterprise/list/6`)
       resetFields()
-      searchBy({ status: '6' })
+      getList({}).then((res)=>{
+        setdata(res)
+      })
     }
 
     return (
       <Card style={{ paddingRight: 20 }}>
-      <Form {...searchFormLayout} onSubmit={submit}>
+      <Form {...searchFormLayout}>
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item label="预期盒长范围">
@@ -163,15 +171,15 @@ const List = (props) => {
                 initialValue: type
               })(
                 <Select>
-                  <Select.Option value="6">全部</Select.Option>
-                  <Select.Option value="1">扣盖式</Select.Option>
-                  <Select.Option value="2">手提式</Select.Option>
-                  <Select.Option value="3">粘接式</Select.Option>
-                  <Select.Option value="4">两页式</Select.Option>
-                  <Select.Option value="5">套盖式</Select.Option>
-                  <Select.Option value="5">摇盖盒</Select.Option>
-                  <Select.Option value="5">抽屉式</Select.Option>
-                  <Select.Option value="5">其他</Select.Option>
+                  <Select.Option value="">全部</Select.Option>
+                  <Select.Option value="扣盖式">扣盖式</Select.Option>
+                  <Select.Option value="手提式">手提式</Select.Option>
+                  <Select.Option value="粘接式">粘接式</Select.Option>
+                  <Select.Option value="两页式">两页式</Select.Option>
+                  <Select.Option value="套盖式">套盖式</Select.Option>
+                  <Select.Option value="摇盖盒">摇盖盒</Select.Option>
+                  <Select.Option value="抽屉式">抽屉式</Select.Option>
+                  <Select.Option value="其他">其他</Select.Option>
                 </Select>
               )}
             </Form.Item>
@@ -182,9 +190,10 @@ const List = (props) => {
               {getFieldDecorator('companyname')(<Input placeholder="请输入"/>)}
             </Form.Item>
           </Col>
+          
           <Col span={8}>
             <ButtonGroup type="form" align="right">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={submit}>
                 查询
               </Button>
               <Button onClick={handelReset}>重置</Button>
@@ -199,7 +208,8 @@ const List = (props) => {
   return (
     <Card>
       {renderSearchForm()}
-      <PagingTable scoll={{ x: 0 }} rowKey={(i) => i.id} columns={columns} {...tableProps} />
+      {/* <PagingTable scoll={{ x: 0 }} rowKey={(i) => i.id} columns={columns}  /> */}
+      <Table dataSource={data} columns={columns}></Table>
     </Card>
   )
 }

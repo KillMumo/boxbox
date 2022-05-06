@@ -30,11 +30,11 @@ const Page = (props) => {
         <Result
           type="success"
           title="注册成功"
-          desc={'请提交认证材料并等待审核，认证审核通过前暂时无法使用平台功能'}
+          // desc={'请提交认证材料并等待审核，认证审核通过前暂时无法使用平台功能'}
         >
           <ButtonGroup align="center">
             <Button type="primary">
-              <Link to="/auth/upload">去认证</Link>
+              <Link to="/user/login">去登录</Link>
             </Button>
           </ButtonGroup>
         </Result>

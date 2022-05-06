@@ -204,7 +204,7 @@ export const useAdminConfig = (form) => {
           name: '供应商名称',
           length: { min: 1, max: 10 }
         },
-        name: 'companyname',
+        name: 'orgName',
         children: <Input placeholder="请输入" />,
         hidden:onshow
       },

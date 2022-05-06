@@ -1,26 +1,18 @@
 import React, { useCallback, useEffect, useState} from 'react'
 import Card from '@/components/Card'
-import { Form, Row, Col, Input, Button, Select, DatePicker, message, InputNumber, Cascader } from 'antd'
-import { useRequest } from '@dragon/hooks'
-import { addReduction, fetchDetail, getItem, saveItem, updateReduction ,getMethodList} from '@/services/carbonAccount/reduction'
-import router from 'umi/router'
-import moment from 'moment'
-import TextArea from 'antd/es/input/TextArea'
-import { validateFiles } from '@/utils/fieldValidator'
+import { Form, Input, Button, Select,message} from 'antd'
+import { addBox } from '@/services/box'
 import UploadNew from '@/components/UploadNew'
 import UploadButton from '@/components/UploadButton'
-import DownloadItem from '@/components/DownloadItem'
-import { useSelector } from 'react-redux'
-// import options from "./Data";
+import { useRequest } from '@dragon/hooks'
+import router from 'umi/router'
 
 const Add = (props) => {
+  const {
+    form: { getFieldDecorator, validateFields,getFieldsValue }
+  } = props
+
   const formLayout = {
-    labelAlign: 'right',
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-    colon: true
-  }
-  const itemlayout = {
     labelAlign: 'right',
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -33,112 +25,56 @@ const Add = (props) => {
     colon: false
   }
 
-  const {
-    form: { getFieldDecorator, validateFields },
-    match: {
-      params: { id }
-    }
-  } = props
+  // const handleSubmit = useCallback(
+  //   (e) => {
+  //     e.preventDefault()
+  //     validateFields(async (err, values) => {
+  //       if (!err) {
+  //         const res = await submit({
+  //           ...values
+  //         })
+  //         if (res instanceof Error) {
+  //           fetchGraph()
+  //           return
+  //         }
+  //         dispatch({
+  //           type: 'modifyPhone/save',
+  //           payload: values
+  //         })
+  //       }
+  //     })
+  //   },
+  //   [dispatch, fetchGraph, graph.graphId, submit, validateFields]
+  // )
 
-  const role = useSelector(({ user }) => user.role)
+  // const { start: submitReq } = useRequest(addBox, {
+  //   manual: true,
+  //   onSuccess: () => {
+  //     router.push('/dataManagement/allList')
+  //     message.success('新增成功')
+  //   }
+  // })
 
-  // console.log('rooole',role)
-
-  const { loading: submitLoading, start: submitReq } = useRequest(addReduction, {
-    manual: true
-  })
-
-  const { loading: getWasteLoading, data: info = {}, start } = useRequest(fetchDetail, {
-    manual: true
-  })
-
-  const { loading: updateWasteLoading, start: updateReq } = useRequest(updateReduction, {
-    manual: true
-  })
-  let place={}
-  function onChange(value, selectedOptions) {
-    console.log(value, selectedOptions);
-
-  }
-useEffect(()=>{
-  if(!id){
-    saveItem([])
-  }
-},[])
-  useEffect(() => {
-    if (id) {
-      start({ bizNo: id })
-    }
-  }, [id, start])
-  console.log(info)
-
-  const [methodfile,setmethodfile]=useState([])
-
-  const requestMethod=()=>{
-    getMethodList().then((res)=>{
-      // console.log('mettttthod',res.records[0])
-      setmethodfile(res.records[0])
-    })
-  }
-
-  useEffect(() => {
-    requestMethod()
-  },[])
-
-  //  提交按钮事件
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      validateFields((err, values) => {
+      validateFields(async (err, values) => {
         if (!err) {
-          const action = id ? updateReq : submitReq
-          if(id){
-            updateReq({
-              ...values,
-              bizNo: id
-            }).then((res) => {
-              if (res instanceof Error) return
-              message.success('更新成功')
-              router.push('/reduction/list')
-            })
-          }else{
-
-            let arr = values.place
-            if(arr.length===2){
-              place.province=arr[0]
-              place.city=arr[0]
-              place.area=arr[1]
-
-            }else if(arr.length===3){
-              place.province=arr[0]
-              place.city=arr[1]
-              place.area=arr[2]
-            }
-            place.rest=values.rest
-            // console.log(place)
-            submitReq({
-              ...values,
-              bizNo: id,
-              scene:"分布式光伏",
-              status:"在建",
-              fileTime:moment(values.fileTime).format('YYYY-MM-DD'),
-              startTime:moment(values.startTime).format('YYYY-MM-DD'),
-              // place:place
-            }).then((res) => {
-              if (res instanceof Error) return
-              message.success(`${id ? '更新' : '添加'}成功`)
-              router.push('/reduction/list')
-            })
+          // values.optTime = moment(values.optTime).format('YYYY-MM-DD HH:mm:ss');
+          const params = {
+            // bizNo:getmethoddata().bizNo,
+            ...values
           }
-
+          // console.log('ggggggggggg',params)
+          addBox(params)
         }
       })
     },
-    [id, submitReq, updateReq, validateFields]
+    [validateFields]
   )
 
   return (
-    <Card loading={getWasteLoading}>
+    <Card>
       <Form {...formLayout}>
       <Form.Item label="供应商名称">
           {getFieldDecorator('companyname', {
@@ -147,8 +83,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入供应商名称！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
@@ -159,8 +94,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入企业地址！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
@@ -171,8 +105,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入联系人姓名！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
@@ -183,8 +116,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入联系人电话！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入"/>)}
         </Form.Item>
 
@@ -195,8 +127,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入成品盒长！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
         </Form.Item>
 
@@ -207,8 +138,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入成品盒宽！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
         </Form.Item>
 
@@ -219,8 +149,7 @@ useEffect(()=>{
                 required: true,
                 message: '请输入成品盒高！'
               }
-            ],
-            initialValue: info?.extra?.projectName
+            ]
           })(<Input style={{ width: 400 }} placeholder="请输入" addonAfter="mm"/>)}
         </Form.Item>
 
@@ -231,23 +160,32 @@ useEffect(()=>{
                 required: true,
                 message: '请输入成品盒高！'
               }
-            ],
-            initialValue: info?.extra?.projectName
-          })(<Select style={{ width: 400 }} placeholder="请输入"/>)}
+            ]
+          })(<Select style={{ width: 400 }} placeholder="请选择" >
+            <Select.Option value="">全部</Select.Option>
+            <Select.Option value="扣盖式">扣盖式</Select.Option>
+            <Select.Option value="手提式">手提式</Select.Option>
+            <Select.Option value="粘接式">粘接式</Select.Option>
+            <Select.Option value="两页式">两页式</Select.Option>
+            <Select.Option value="套盖式">套盖式</Select.Option>
+            <Select.Option value="摇盖盒">摇盖盒</Select.Option>
+            <Select.Option value="抽屉式">抽屉式</Select.Option>
+            <Select.Option value="其他">其他</Select.Option>
+          </Select>)}
         </Form.Item>
 
         <Form.Item label="数字文件">
           {getFieldDecorator('boxfile', {
-            initialValue: (getItem()?.extra?.attachment || []).map((f) => ({
-              uid: f.uid,
-              name: f.name,
-              status: 'done',
-              url: f.url,
-              thumbUrl: '/matrix/biz-file/downloadFile?path=' + encodeURI(f.url)
-            })),
+            // initialValue: (getItem()?.extra?.attachment || []).map((f) => ({
+            //   uid: f.uid,
+            //   name: f.name,
+            //   status: 'done',
+            //   url: f.url,
+            //   thumbUrl: '/matrix/biz-file/downloadFile?path=' + encodeURI(f.url)
+            // })),
             rules: [
               {
-                required: true,
+                required: false,
                 message: '请上传其他附件！'
               }
             ]
@@ -269,8 +207,6 @@ useEffect(()=>{
         
         <Form.Item {...buttonlayout} label=" ">
           <Button
-            // loading={updateLoading || submitLoading}
-            loading={submitLoading}
             type="primary"
             htmlType="submit"
             onClick={handleSubmit}
